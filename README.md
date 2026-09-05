@@ -46,3 +46,10 @@ For example:
     (hbnb) create BaseModel
     (hbnb) all
     (hbnb) quit
+
+## Project Structure
+
+- `models/` — contains the classes used in the project.
+- `tests/` — contains unit tests for the project.
+- `console.py` — the entry point for the command interpreter.
+- `models/base_model.py` — defines the base class for project models.
