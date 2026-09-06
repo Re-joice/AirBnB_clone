@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Defines the FileStorage class."""
+"""Module for the FileStorage class."""
 
 import json
 
@@ -20,7 +20,7 @@ class FileStorage:
         self.__objects[key] = obj
 
     def save(self):
-        """Serialize objects to the JSON file."""
+        """Serialize __objects to the JSON file."""
         objects_dict = {}
 
         for key, obj in self.__objects.items():
@@ -30,7 +30,7 @@ class FileStorage:
             json.dump(objects_dict, file)
 
     def reload(self):
-        """Deserialize the JSON file to objects."""
+        """Deserialize the JSON file to __objects."""
         try:
             with open(self.__file_path, "r") as file:
                 objects_dict = json.load(file)

@@ -32,7 +32,7 @@ class BaseModel:
         )
 
     def save(self):
-        """Update the updated_at attribute and save to storage."""
+        """Update updated_at and save the object to storage."""
         self.updated_at = datetime.now()
         storage.save()
 
