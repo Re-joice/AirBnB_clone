@@ -6,12 +6,18 @@ import shlex
 
 from models import storage
 from models.base_model import BaseModel
+from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
     """Command interpreter for the AirBnB project."""
 
     prompt = "(hbnb) "
+
+    classes = {
+        "BaseModel": BaseModel,
+        "User": User
+    }
 
     def do_quit(self, arg):
         """Quit command to exit the program."""
@@ -28,32 +34,34 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """Create a new instance of a class."""
-        if not arg:
+        args = shlex.split(arg)
+
+        if not args:
             print("** class name missing **")
             return
 
-        args = shlex.split(arg)
         class_name = args[0]
 
-        if class_name != "BaseModel":
+        if class_name not in self.classes:
             print("** class doesn't exist **")
             return
 
-        new_instance = BaseModel()
+        new_instance = self.classes[class_name]()
         storage.new(new_instance)
         storage.save()
         print(new_instance.id)
 
     def do_show(self, arg):
         """Show the string representation of an instance."""
-        if not arg:
+        args = shlex.split(arg)
+
+        if not args:
             print("** class name missing **")
             return
 
-        args = shlex.split(arg)
         class_name = args[0]
 
-        if class_name != "BaseModel":
+        if class_name not in self.classes:
             print("** class doesn't exist **")
             return
 
@@ -72,14 +80,15 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, arg):
         """Delete an instance."""
-        if not arg:
+        args = shlex.split(arg)
+
+        if not args:
             print("** class name missing **")
             return
 
-        args = shlex.split(arg)
         class_name = args[0]
 
-        if class_name != "BaseModel":
+        if class_name not in self.classes:
             print("** class doesn't exist **")
             return
 
@@ -99,13 +108,13 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, arg):
         """Print all string representations of instances."""
+        args = shlex.split(arg)
         objects = storage.all()
 
-        if arg:
-            args = shlex.split(arg)
+        if args:
             class_name = args[0]
 
-            if class_name != "BaseModel":
+            if class_name not in self.classes:
                 print("** class doesn't exist **")
                 return
 
@@ -117,13 +126,15 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, arg):
         """Update an instance."""
-        if not arg:
+        args = shlex.split(arg)
+
+        if not args:
             print("** class name missing **")
             return
 
-        args = shlex.split(arg)
+        class_name = args[0]
 
-        if args[0] != "BaseModel":
+        if class_name not in self.classes:
             print("** class doesn't exist **")
             return
 
@@ -131,7 +142,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
 
-        key = "{}.{}".format(args[0], args[1])
+        key = "{}.{}".format(class_name, args[1])
         objects = storage.all()
 
         if key not in objects:

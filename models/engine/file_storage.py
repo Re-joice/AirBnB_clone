@@ -38,6 +38,13 @@ class FileStorage:
             return
 
         from models.base_model import BaseModel
+        from models.user import User
+
+        classes = {
+            "BaseModel": BaseModel,
+            "User": User
+        }
 
         for key, value in objects_dict.items():
-            self.__objects[key] = BaseModel(**value)
+            class_name = value["__class__"]
+            self.__objects[key] = classes[class_name](**value)
